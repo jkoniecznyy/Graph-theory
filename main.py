@@ -1,6 +1,6 @@
 import random
 
-from map_explorer import MapExplorer
+from graph_theory.map_explorer import MapExplorer
 
 # lista z obrazka
 EXAMPLE_MAP_LIST = [
