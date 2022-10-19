@@ -1,5 +1,9 @@
 ## Teoria grafów i sieci
 
-Zespół:  
+Zespół:
 Anna Domańska, Joanna Białas (Krawczyk), Dariusz Gansty,
-Jerzy Konieczny, Patryk Dragon 
+Jerzy Konieczny, Patryk Dragon
+
+## Instalacja
+
+Zobacz (README-DEV.md)[README-DEV.md]
