@@ -1,6 +1,3 @@
-from pyparsing import col
-
-
 class MapExplorer:
     """Class for map exploring"""
 
@@ -11,12 +8,19 @@ class MapExplorer:
         self._visited_points: list[list[bool]] = [[False for _ in range(len(row))] for row in map]
         self._island_count = 0
 
+    def _check_row_and_cols_id(self, row_id: int, column_id: int) -> bool:
+        if not (-1 < row_id < len(self._map) and -1 < column_id < len(self._map[row_id])):
+            return False
+        return True
+
     def _is_fragment_island(self, row_id: int, column_id: int) -> bool:
-        try:
-            assert row_id > -1 and column_id > -1
-            if self._map[row_id][column_id] == self.MAP_NOT_ISLAND_MARK or self._visited_points[row_id][column_id]:
-                return False
-        except (IndexError, AssertionError):
+        if not self._check_row_and_cols_id(row_id, column_id):
+            return False
+
+        if (
+            self._map[row_id][column_id] == self.MAP_NOT_ISLAND_MARK
+            or self._visited_points[row_id][column_id]
+        ):
             return False
 
         self._visited_points[row_id][column_id] = True
@@ -32,7 +36,11 @@ class MapExplorer:
 
         return True
 
-    def get_istlands_count(self):
+    def get_islands_count(self) -> int:
+        """
+        Returns the islands count
+        :return: islands count
+        """
         return self._island_count
 
     def perform_exploring(self) -> None:
