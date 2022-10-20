@@ -13,7 +13,7 @@ EXAMPLE_MAP_LIST = [
 ]
 
 
-def create_random_map() -> list[list[int]]:
+def create_random_map(min_length: int = 5, max_length: int = 10) -> list[list[int]]:
     """
     Creates a random map of 0's and 1's (water/land)
     with a random number of rows and columns (both between 3 and 9)
@@ -22,7 +22,7 @@ def create_random_map() -> list[list[int]]:
 
     :return: a randomly created map
     """
-    rows, columns = random.randint(3, 9), random.randint(3, 9)
+    rows, columns = random.randint(min_length, max_length), random.randint(min_length, max_length)
     return [[random.randint(0, 1) for y in range(columns)] for _ in range(rows)]
 
 
@@ -38,6 +38,12 @@ def draw_map(map: list[list[int]]) -> None:
     """
     [print('| ' + ' '.join(['M' if bit else ' ' for bit in row]) + ' |') for row in map]
 
+def print_map_as_bits(map: list[list[int]]) -> None:
+    # [print('| ' ', '.join(['M' if bit else ' ' for bit in row]) + ' |') for row in map]
+    # print([row for row in map])
+    for row in map:
+        print(row)
+
 
 def present_map(map: list[list[int]]):
     map_explorer = MapExplorer(map)
@@ -48,9 +54,14 @@ def present_map(map: list[list[int]]):
 
 
 def main() -> None:
-    present_map(create_random_map())
-    print('-'*20)
-    present_map(EXAMPLE_MAP_LIST)
+    for _ in range(3):
+        mapa=create_random_map(10, 11)
+        present_map(mapa)
+        print_map_as_bits(mapa)
+        print('-'*20)
+
+
+    # present_map(EXAMPLE_MAP_LIST)
 
 
 if __name__ == '__main__':

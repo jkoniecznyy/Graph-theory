@@ -1,3 +1,6 @@
+from pyparsing import col
+
+
 class MapExplorer:
     """Class for map exploring"""
 
@@ -10,9 +13,10 @@ class MapExplorer:
 
     def _is_fragment_island(self, row_id: int, column_id: int) -> bool:
         try:
+            assert row_id > -1 and column_id > -1
             if self._map[row_id][column_id] == self.MAP_NOT_ISLAND_MARK or self._visited_points[row_id][column_id]:
                 return False
-        except IndexError:
+        except (IndexError, AssertionError):
             return False
 
         self._visited_points[row_id][column_id] = True
