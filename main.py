@@ -1,6 +1,12 @@
+from graph_theory import create_random_map, present_map, print_map_as_bits
+
+
 def main() -> None:
-    """Main function printing hello world"""
-    print('Hello world')
+    """The main function of the code"""
+    for _ in range(3):
+        map = create_random_map(10, 11)
+        present_map(map)
+        print_map_as_bits(map)
 
 
 if __name__ == '__main__':
