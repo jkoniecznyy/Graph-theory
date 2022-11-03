@@ -3,21 +3,21 @@ from graph_theory.map_explorer import MapExplorer
 
 def test_init():
     map = [[1, 0], [0, 0]]
-    istance = MapExplorer(map)
-    assert isinstance(istance, MapExplorer)
+    instance = MapExplorer(map)
+    assert isinstance(instance, MapExplorer)
 
-    assert istance._map == map
-    assert istance._island_count == 0
-    assert istance._visited_points == [[0, 0], [0, 0]]
+    assert instance._map == map
+    assert instance._island_count == 0
+    assert instance._visited_points == [[0, 0], [0, 0]]
 
 
 def test_get_islands_count():
     map = [[1, 0], [0, 0]]
-    istance = MapExplorer(map)
+    instance = MapExplorer(map)
 
-    assert istance.get_islands_count() == 0
-    istance._island_count = 9
-    assert istance.get_islands_count() == 9
+    assert instance.get_islands_count() == 0
+    instance._island_count = 9
+    assert instance.get_islands_count() == 9
 
 
 def test_check_row_and_cols_id():
