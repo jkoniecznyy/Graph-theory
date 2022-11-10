@@ -5,7 +5,7 @@ from .map_explorer import MapExplorer
 
 def create_random_map(min_length: int = 5, max_length: int = 10) -> list[list[int]]:
     """
-    Create a random map of 0's and 1's (water/land) with a random number of rows and columns
+    Creates a random map of 0's and 1's (water/land) with a random number of rows and columns
 
     :param min_length: minimal width and height of the map
     :param max_length: maximal width and height of the map
@@ -17,7 +17,7 @@ def create_random_map(min_length: int = 5, max_length: int = 10) -> list[list[in
 
 def draw_map(map: list[list[int]]) -> None:
     """
-    Draw the map in the console
+    Draws the map in the console
     ' ' - Water
     'M' - Motherland
 
@@ -28,7 +28,7 @@ def draw_map(map: list[list[int]]) -> None:
 
 def print_map_as_bits(map: list[list[int]]) -> None:
     """
-    Print map as bits, each row in the next line
+    Prints map as bits, each row in the next line
 
     :param map: the map to print
     """
@@ -38,7 +38,7 @@ def print_map_as_bits(map: list[list[int]]) -> None:
 
 def present_map(map: list[list[int]]) -> None:
     """
-    Print simple map visualization, count the islands on the map
+    Prints simple map visualization, counts the islands on the map
 
     :param map: the map to present
     """
