@@ -1,4 +1,5 @@
 from graph_theory.map_explorer import MapExplorer
+from graph_theory.models import Coordinates
 
 
 def test_init():
@@ -23,31 +24,31 @@ def test_get_islands_count():
 def test_check_row_and_cols_id():
     map = [[1, 0], [0, 0]]
     instance = MapExplorer(map)
-    assert instance._are_coordinates_valid(0, 0)
-    assert instance._are_coordinates_valid(1, 1)
-    assert not instance._are_coordinates_valid(-1, 1)
-    assert not instance._are_coordinates_valid(1, -1)
-    assert not instance._are_coordinates_valid(2, 0)
-    assert not instance._are_coordinates_valid(1, 2)
-    assert not instance._are_coordinates_valid(5, -2)
+    assert instance._are_coordinates_valid(Coordinates(0, 0))
+    assert instance._are_coordinates_valid(Coordinates(1, 1))
+    assert not instance._are_coordinates_valid(Coordinates(-1, 1))
+    assert not instance._are_coordinates_valid(Coordinates(1, -1))
+    assert not instance._are_coordinates_valid(Coordinates(2, 0))
+    assert not instance._are_coordinates_valid(Coordinates(1, 2))
+    assert not instance._are_coordinates_valid(Coordinates(5, -2))
 
 
 def test_is_fragment_island_rows_and_cols_invalid():
     map = [[1, 0], [0, 0]]
     instance = MapExplorer(map)
-    assert not instance._is_fragment_island(-1, 1)
-    assert not instance._is_fragment_island(1, -1)
-    assert not instance._is_fragment_island(2, 0)
-    assert not instance._is_fragment_island(1, 2)
-    assert not instance._is_fragment_island(5, -2)
+    assert not instance._is_fragment_island(Coordinates(-1, 1))
+    assert not instance._is_fragment_island(Coordinates(1, -1))
+    assert not instance._is_fragment_island(Coordinates(2, 0))
+    assert not instance._is_fragment_island(Coordinates(1, 2))
+    assert not instance._is_fragment_island(Coordinates(5, -2))
 
 
 def test_is_fragment_island_is_not_land():
     map = [[1, 0], [0, 0]]
     instance = MapExplorer(map)
-    assert not instance._is_fragment_island(0, 1)
-    assert not instance._is_fragment_island(1, 0)
-    assert not instance._is_fragment_island(1, 1)
+    assert not instance._is_fragment_island(Coordinates(0, 1))
+    assert not instance._is_fragment_island(Coordinates(1, 0))
+    assert not instance._is_fragment_island(Coordinates(1, 1))
 
 
 def test_is_fragment_island_is_visited():
@@ -55,21 +56,21 @@ def test_is_fragment_island_is_visited():
     instance = MapExplorer(map)
     instance._visited_points[0][0] = True
     instance._visited_points[1][0] = True
-    assert not instance._is_fragment_island(0, 0)
-    assert not instance._is_fragment_island(1, 0)
+    assert not instance._is_fragment_island(Coordinates(0, 1))
+    assert not instance._is_fragment_island(Coordinates(1, 0))
 
 
 def test_is_fragment_island_set_visited():
     map = [[1, 0], [1, 0]]
     instance = MapExplorer(map)
-    instance._is_fragment_island(0, 0)
+    instance._is_fragment_island(Coordinates(0, 0))
     assert instance._visited_points == [[True, False], [True, False]]
 
 
 def test_is_fragment_island_call_recursive():
     map = [[1, 0, 1], [1, 0, 1], [1, 0, 0]]
     instance = MapExplorer(map)
-    instance._is_fragment_island(0, 0)
+    instance._is_fragment_island(Coordinates(0, 0))
     assert instance._visited_points == [[True, False, False], [True, False, False], [True, False, False]]
 
 
