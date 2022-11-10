@@ -23,13 +23,13 @@ def test_get_islands_count():
 def test_check_row_and_cols_id():
     map = [[1, 0], [0, 0]]
     instance = MapExplorer(map)
-    assert instance._check_row_and_cols_id(0, 0)
-    assert instance._check_row_and_cols_id(1, 1)
-    assert not instance._check_row_and_cols_id(-1, 1)
-    assert not instance._check_row_and_cols_id(1, -1)
-    assert not instance._check_row_and_cols_id(2, 0)
-    assert not instance._check_row_and_cols_id(1, 2)
-    assert not instance._check_row_and_cols_id(5, -2)
+    assert instance._are_coordinates_valid(0, 0)
+    assert instance._are_coordinates_valid(1, 1)
+    assert not instance._are_coordinates_valid(-1, 1)
+    assert not instance._are_coordinates_valid(1, -1)
+    assert not instance._are_coordinates_valid(2, 0)
+    assert not instance._are_coordinates_valid(1, 2)
+    assert not instance._are_coordinates_valid(5, -2)
 
 
 def test_is_fragment_island_rows_and_cols_invalid():
