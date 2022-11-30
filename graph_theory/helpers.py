@@ -38,7 +38,7 @@ def print_map_as_bits(map: list[list[int]]) -> None:
 
 def present_map(map: list[list[int]]) -> None:
     """
-    Prints simple map visualization and count of the map islands
+    Prints simple map visualization, counts the islands on the map
 
     :param map: the map to present
     """
