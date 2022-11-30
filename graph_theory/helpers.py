@@ -1,6 +1,7 @@
 import random
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+from matplotlib.ticker import MultipleLocator
 
 from .map_explorer import MapExplorer
 
@@ -34,9 +35,15 @@ def plot_map(map: list[list[int]]) -> None:
 
     :param map: the map to draw
     """
-    plt.matshow(map, cmap=ListedColormap(['blue', 'goldenrod']))
-    plt.xticks(range(0, len(map[0])))
-    plt.yticks(range(0, len(map)))
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.matshow(map, cmap=ListedColormap(['blue', 'goldenrod']))
+    ax.set_xticks(range(0, len(map[0])))
+    ax.set_yticks(range(0, len(map)))
+    ax.xaxis.set_minor_locator(MultipleLocator(0.5))
+    ax.yaxis.set_minor_locator(MultipleLocator(0.5))
+    ax.grid(which='minor', color='gray', linewidth=1)
+    ax.tick_params(which='major', top=False, bottom=False, left=False, right=False)
+    plt.tight_layout()
     plt.show()
 
 
