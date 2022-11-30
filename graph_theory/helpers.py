@@ -1,4 +1,6 @@
 import random
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 
 from .map_explorer import MapExplorer
 
@@ -26,6 +28,18 @@ def draw_map(map: list[list[int]]) -> None:
     [print('| ' + ' '.join(['M' if bit else ' ' for bit in row]) + ' |') for row in map]
 
 
+def plot_map(map: list[list[int]]) -> None:
+    """
+    Plots the map in a window
+
+    :param map: the map to draw
+    """
+    plt.matshow(map, cmap=ListedColormap(['blue', 'goldenrod']))
+    plt.xticks(range(0, len(map[0])))
+    plt.yticks(range(0, len(map)))
+    plt.show()
+
+
 def print_map_as_bits(map: list[list[int]]) -> None:
     """
     Prints map as bits, each row in the next line
@@ -47,3 +61,4 @@ def present_map(map: list[list[int]]) -> None:
     print('Map preview:')
     draw_map(map)
     print('\nIslands found:', map_explorer.get_islands_count())
+    plot_map(map)
