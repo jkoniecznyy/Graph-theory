@@ -1,7 +1,11 @@
 import random
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.colors import ListedColormap
-from matplotlib.ticker import MultipleLocator
+from matplotlib.image import imread
+from sklearn.cluster import KMeans
 
 from .map_explorer import MapExplorer
 
@@ -39,8 +43,8 @@ def plot_map(map: list[list[int]]) -> None:
     ax.matshow(map, cmap=ListedColormap(['blue', 'goldenrod']))
     ax.set_xticks(range(0, len(map[0])))
     ax.set_yticks(range(0, len(map)))
-    ax.xaxis.set_minor_locator(MultipleLocator(0.5))
-    ax.yaxis.set_minor_locator(MultipleLocator(0.5))
+    # ax.xaxis.set_minor_locator(MultipleLocator(200))
+    # ax.yaxis.set_minor_locator(MultipleLocator(200))
     ax.grid(which='minor', color='gray', linewidth=1)
     ax.tick_params(which='major', top=False, bottom=False, left=False, right=False)
     plt.tight_layout()
@@ -64,8 +68,21 @@ def present_map(map: list[list[int]]) -> None:
     :param map: the map to present
     """
     map_explorer = MapExplorer(map)
-    map_explorer.perform_exploring()
+    map_explorer.build_graph()
     print('Map preview:')
     draw_map(map)
-    print('\nIslands found:', map_explorer.get_islands_count())
+    print('\nIslands found:', map_explorer.detect_island_graph())
     plot_map(map)
+
+
+def proccess_image(path: Path) -> list[list[int]]:
+
+    original_image = imread(path.absolute())
+    x, y, _ = original_image.shape
+    flat_image = np.reshape(original_image, [-1, 3])
+
+    kmeans = KMeans(n_clusters=2, n_init=10)
+    print('fit')
+    kmeans.fit(flat_image)
+
+    return kmeans.labels_.reshape(x, y).tolist()

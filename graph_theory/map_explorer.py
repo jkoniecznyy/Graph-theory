@@ -1,15 +1,18 @@
+from collections import defaultdict
+
 from .models import Coordinates
 
 
 class MapExplorer:
     """Class for map exploring"""
 
-    MAP_NOT_ISLAND_MARK = 0
+    MAP_IS_NOT_LAND_MARK = 0
 
     def __init__(self, map: list[list[int]]):
         self._map = map
         self._visited_points: list[list[bool]] = [[False for _ in range(len(row))] for row in map]
         self._island_count = 0
+        self._graph: dict[Coordinates, set[Coordinates]] = defaultdict(set)
 
     def _are_coordinates_valid(self, coords: Coordinates) -> bool:
         """
@@ -19,71 +22,60 @@ class MapExplorer:
                  False if coordinates are invalid
 
         """
-        if -1 < coords.x < len(self._map) and -1 < coords.y < len(self._map[coords.x]):
-            return True
-        return False
+        return -1 < coords.x < len(self._map) and -1 < coords.y < len(self._map[coords.x])
 
-    def _are_coordinates_visited(self, coords: Coordinates) -> bool:
-        """
-        Checks if the coords.x and coords.y were already visited
-        :param coords: Coordinates
-        :return: True if coordinates were visited
-                 False if coordinates were not visited
-
-        """
-        if (
-            self._map[coords.x][coords.y] == self.MAP_NOT_ISLAND_MARK
-            or self._visited_points[coords.x][coords.y]
-        ):
-            return True
-        return False
-
-    def _is_fragment_island(self, coords: Coordinates) -> bool:
-        """
-        Checks if given coordinates are invalid or visited,
-        if not calls itself to mark the entire island
-        :param coords: Coordinates
-        :return: True if marking is completed
-                 False if coordinates are invalid, visited or there is no land
-        """
-        if not self._are_coordinates_valid(coords):
-            return False
-
-        if self._are_coordinates_visited(coords):
-            return False
-
-        self._visited_points[coords.x][coords.y] = True
-        self._are_nearby_lands_connected(coords)
-
-        return True
-
-    def _are_nearby_lands_connected(self, coords: Coordinates) -> None:
-        """
-        Goes through every land directly connected to given coordinates
-        :param coords: Coordinates
-        """
-        self._is_fragment_island(coords.left())
-        self._is_fragment_island(coords.left().down())
-        self._is_fragment_island(coords.down())
-        self._is_fragment_island(coords.down().right())
-        self._is_fragment_island(coords.right())
-        self._is_fragment_island(coords.right().up())
-        self._is_fragment_island(coords.up())
-        self._is_fragment_island(coords.up().left())
-
-    def get_islands_count(self) -> int:
-        """
-        Returns the islands count
-        :return: islands count
-        """
-        return self._island_count
-
-    def perform_exploring(self) -> None:
-        """
-        Goes through the map detecting the land
-        When the land is detected calls the _is_fragment_island and increments the count
-        """
+    def build_graph(self) -> None:
         for x, row in enumerate(self._map):
             for y in range(len(row)):
-                if self._is_fragment_island(Coordinates(x, y)):
-                    self._island_count += 1
+                self._add_neighbours(Coordinates(x, y))
+
+    def _add_neighbours(self, coords: Coordinates) -> None:
+        for current_checking in [
+            coords.left(),
+            coords.left().down(),
+            coords.down(),
+            coords.down().right(),
+            coords.right(),
+            coords.right().up(),
+            coords.up(),
+            coords.up().left(),
+        ]:
+            if self._is_land(current_checking):
+                self._graph[coords].add(current_checking)
+
+    def _is_land(self, coords: Coordinates) -> bool:
+        return (
+            self._are_coordinates_valid(coords)
+            and not self._map[coords.x][coords.y] == self.MAP_IS_NOT_LAND_MARK
+        )
+
+    def _is_visited(self, coords: Coordinates) -> bool:
+        return self._are_coordinates_valid(coords) and self._visited_points[coords.x][coords.y]
+
+    def _mark_as_visited(self, coords: Coordinates) -> None:
+        self._visited_points[coords.x][coords.y] = True
+
+    def _dfs(self, start_node: Coordinates) -> None:
+        stack = [start_node]
+
+        # iterate until the stack is empty
+        while stack:
+            # get the top node from the stack
+            node = stack.pop()
+
+            # if the node has not been visited, mark it as visited
+            # and add its neighbors to the stack
+            if not self._is_visited(node):
+                self._mark_as_visited(node)
+                stack.extend(self._graph[node])
+
+    def detect_island_graph(self) -> int:
+        detected_islands = 0
+        for x, row in enumerate(self._map):
+            for y in range(len(row)):
+                point = Coordinates(x, y)
+                if not self._is_visited(point) and self._is_land(point):
+                    self._dfs(point)
+                    detected_islands += 1
+
+        return detected_islands
