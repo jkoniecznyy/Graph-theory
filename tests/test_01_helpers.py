@@ -1,4 +1,11 @@
-from graph_theory.helpers import create_random_map, draw_map, present_map, print_map_as_bits
+from pathlib import Path
+import pytest
+from pytest_mock import MockerFixture
+from graph_theory.helpers import create_random_map, draw_map, present_map, print_map_as_bits, proccess_image
+
+@pytest.fixture(scope='function')
+def mock_show(mocker: MockerFixture):
+    mocker.patch('matplotlib.pyplot.show', return_value=None)
 
 
 def test_create_random_map_sizes():
@@ -29,7 +36,7 @@ def test_print_map_as_bits(capsys):
     assert captured.out == '[1, 1]\n[1, 0]\n'
 
 
-def test_present_map(capsys):
+def test_present_map(capsys, mock_show: None):
     map = [
         [1, 1, 0],
         [1, 0, 0],
@@ -39,3 +46,11 @@ def test_present_map(capsys):
     captured = capsys.readouterr()
     assert 'Islands found: 2' in captured.out
     assert '| M M   |\n| M     |\n| M   M |' in captured.out
+
+
+def test_proccess_image():
+    result = proccess_image(Path(__file__).parent / 'test_images' / 'map.jpg')
+
+    for row in result:
+        for i in row:
+            assert i in [0, 1]
