@@ -2,16 +2,17 @@ from collections import defaultdict
 
 from .models import Coordinates
 
+Map = list[list[int]]
+
 
 class MapExplorer:
     """Class for map exploring"""
 
     MAP_IS_NOT_LAND_MARK = 0
 
-    def __init__(self, map: list[list[int]]):
+    def __init__(self, map: Map):
         self._map = map
         self._visited_points: list[list[bool]] = [[False for _ in range(len(row))] for row in map]
-        self._island_count = 0
         self._graph: dict[Coordinates, set[Coordinates]] = defaultdict(set)
 
     def _are_coordinates_valid(self, coords: Coordinates) -> bool:
@@ -30,6 +31,8 @@ class MapExplorer:
                 self._add_neighbours(Coordinates(x, y))
 
     def _add_neighbours(self, coords: Coordinates) -> None:
+        if not self._is_land(coords):
+            return
         for current_checking in [
             coords.left(),
             coords.left().down(),
