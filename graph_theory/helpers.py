@@ -7,10 +7,10 @@ from matplotlib.colors import ListedColormap
 from matplotlib.image import imread
 from sklearn.cluster import KMeans
 
-from .map_explorer import MapExplorer
+from .map_explorer import MapExplorer, Map
 
 
-def create_random_map(min_length: int = 5, max_length: int = 10) -> list[list[int]]:
+def create_random_map(min_length: int = 5, max_length: int = 10) -> Map:
     """
     Creates a random map of 0's and 1's (water/land) with a random number of rows and columns
 
@@ -22,7 +22,7 @@ def create_random_map(min_length: int = 5, max_length: int = 10) -> list[list[in
     return [[random.randint(0, 1) for y in range(columns)] for _ in range(rows)]
 
 
-def draw_map(map: list[list[int]]) -> None:
+def draw_map(map: Map) -> None:
     """
     Draws the map in the console
     ' ' - Water
@@ -33,7 +33,7 @@ def draw_map(map: list[list[int]]) -> None:
     [print('| ' + ' '.join(['M' if bit else ' ' for bit in row]) + ' |') for row in map]
 
 
-def plot_map(map: list[list[int]]) -> None:
+def plot_map(map: Map) -> None:
     """
     Plots the map in a window
 
@@ -51,7 +51,7 @@ def plot_map(map: list[list[int]]) -> None:
     plt.show()
 
 
-def print_map_as_bits(map: list[list[int]]) -> None:
+def print_map_as_bits(map: Map) -> None:
     """
     Prints map as bits, each row in the next line
 
@@ -61,7 +61,7 @@ def print_map_as_bits(map: list[list[int]]) -> None:
         print(row)
 
 
-def present_map(map: list[list[int]]) -> None:
+def present_map(map: Map) -> None:
     """
     Prints simple map visualization, counts the islands on the map
 
@@ -75,7 +75,7 @@ def present_map(map: list[list[int]]) -> None:
     plot_map(map)
 
 
-def proccess_image(path: Path) -> list[list[int]]:
+def proccess_image(path: Path) -> Map:
 
     original_image = imread(path.absolute())
     x, y, _ = original_image.shape
