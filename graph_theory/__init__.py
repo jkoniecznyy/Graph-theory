@@ -1,4 +1,4 @@
-from .helpers import create_random_map, present_map, print_map_as_bits, proccess_image
+from .helpers import create_random_map, present_map, print_map_as_bits, process_image
 from .map_explorer import MapExplorer
 
 
@@ -7,5 +7,5 @@ __all__ = [
     'create_random_map',
     'present_map',
     'print_map_as_bits',
-    'proccess_image',
+    'process_image',
 ]

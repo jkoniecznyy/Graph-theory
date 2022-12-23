@@ -8,7 +8,7 @@ Map = list[list[int]]
 class MapExplorer:
     """Class for map exploring"""
 
-    MAP_IS_NOT_LAND_MARK = 0
+    MAP_IS_LAND_MARK = 1
 
     def __init__(self, map: Map):
         self._map = map
@@ -21,7 +21,6 @@ class MapExplorer:
         :param coords: Coordinates
         :return: True if coordinates are valid
                  False if coordinates are invalid
-
         """
         return -1 < coords.x < len(self._map) and -1 < coords.y < len(self._map[coords.x])
 
@@ -49,7 +48,7 @@ class MapExplorer:
     def _is_land(self, coords: Coordinates) -> bool:
         return (
             self._are_coordinates_valid(coords)
-            and not self._map[coords.x][coords.y] == self.MAP_IS_NOT_LAND_MARK
+            and self._map[coords.x][coords.y] == self.MAP_IS_LAND_MARK
         )
 
     def _is_visited(self, coords: Coordinates) -> bool:

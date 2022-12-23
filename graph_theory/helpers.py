@@ -33,20 +33,23 @@ def draw_map(map: Map) -> None:
     [print('| ' + ' '.join(['M' if bit else ' ' for bit in row]) + ' |') for row in map]
 
 
-def plot_map(map: Map) -> None:
+def scale(x: int, y: int) -> tuple[float, float]:
+    """Scale both x and y to a number between 0 and 10 """
+    return x / max(x, y) * 10, y / max(x, y) * 10
+
+
+def plot_map(map: list[list[int]], islands_count: int) -> None:
     """
     Plots the map in a window
 
     :param map: the map to draw
+    :param islands_count: the number of islands found by the algorithm
     """
-    fig, ax = plt.subplots(figsize=(7, 7))
+    fig, ax = plt.subplots(figsize=(scale(len(map[0]), len(map))))
     ax.matshow(map, cmap=ListedColormap(['blue', 'goldenrod']))
-    ax.set_xticks(range(0, len(map[0])))
-    ax.set_yticks(range(0, len(map)))
-    # ax.xaxis.set_minor_locator(MultipleLocator(200))
-    # ax.yaxis.set_minor_locator(MultipleLocator(200))
-    ax.grid(which='minor', color='gray', linewidth=1)
-    ax.tick_params(which='major', top=False, bottom=False, left=False, right=False)
+    plt.title(f'Islands found: {islands_count}', pad=15)
+    ax.xaxis.set_visible(False)
+    ax.yaxis.set_visible(False)
     plt.tight_layout()
     plt.show()
 
@@ -69,14 +72,13 @@ def present_map(map: Map) -> None:
     """
     map_explorer = MapExplorer(map)
     map_explorer.build_graph()
-    print('Map preview:')
-    draw_map(map)
-    print('\nIslands found:', map_explorer.detect_island_graph())
-    plot_map(map)
+    # print('Map preview:')
+    # draw_map(map)
+    # print('\nIslands found:', map_explorer.detect_island_graph())
+    plot_map(map, map_explorer.detect_island_graph())
 
 
-def proccess_image(path: Path) -> Map:
-
+def process_image(path: Path) -> Map:
     original_image = imread(path.absolute())
     x, y, _ = original_image.shape
     flat_image = np.reshape(original_image, [-1, 3])

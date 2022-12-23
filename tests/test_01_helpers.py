@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest
 from pytest_mock import MockerFixture
-from graph_theory.helpers import create_random_map, draw_map, present_map, print_map_as_bits, proccess_image
+from graph_theory.helpers import create_random_map, draw_map, present_map, print_map_as_bits, process_image
 
 @pytest.fixture(scope='function')
 def mock_show(mocker: MockerFixture):
@@ -49,7 +49,7 @@ def test_present_map(capsys, mock_show: None):
 
 
 def test_proccess_image():
-    result = proccess_image(Path(__file__).parent / 'test_images' / 'map.jpg')
+    result = process_image(Path(__file__).parent / 'test_images' / 'map.jpg')
 
     for row in result:
         for i in row:
