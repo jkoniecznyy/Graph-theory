@@ -72,9 +72,6 @@ def present_map(map: Map) -> None:
     """
     map_explorer = MapExplorer(map)
     map_explorer.build_graph()
-    # print('Map preview:')
-    # draw_map(map)
-    # print('\nIslands found:', map_explorer.detect_island_graph())
     plot_map(map, map_explorer.detect_island_graph())
 
 
