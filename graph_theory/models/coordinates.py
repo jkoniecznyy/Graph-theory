@@ -30,3 +30,9 @@ class Coordinates:
         :return: Coordinate with y + 1
         """
         return Coordinates(self.x, self.y + 1)
+
+    def __hash__(self):
+        return hash(str(f'{self.x}:{self.y}'))
+
+    def __str__(self) -> str:
+        return f'{self.x}, {self.y}'
